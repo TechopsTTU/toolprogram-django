@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Employee List</h1>
+    <a href="{% url 'employees:employee_add' %}">Add Employee</a>
+    <ul>
+        {% for employee in object_list %}
+            <li>
+                <a href="{% url 'employees:employee_detail' employee.pk %}">{{ employee }}</a>
+                (<a href="{% url 'employees:employee_edit' employee.pk %}">Edit</a> |
+                <a href="{% url 'employees:employee_delete' employee.pk %}">Delete</a>)
+            </li>
+        {% empty %}
+            <li>No employees found.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
