@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>WorkCenter List</h1>
+    <a href="{% url 'workcenters:workcenter_add' %}">Add WorkCenter</a>
+    <ul>
+        {% for workcenter in object_list %}
+            <li>
+                <a href="{% url 'workcenters:workcenter_detail' workcenter.pk %}">{{ workcenter }}</a>
+                (<a href="{% url 'workcenters:workcenter_edit' workcenter.pk %}">Edit</a> |
+                <a href="{% url 'workcenters:workcenter_delete' workcenter.pk %}">Delete</a>)
+            </li>
+        {% empty %}
+            <li>No workcenters found.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

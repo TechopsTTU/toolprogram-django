@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>WorkCenter Detail</h1>
+    <p>Name: {{ object.name }}</p>
+    <p>Location: {{ object.location }}</p>
+    <p>Supervisor: {{ object.supervisor }}</p>
+    <a href="{% url 'workcenters:workcenter_edit' object.pk %}">Edit</a>
+    <a href="{% url 'workcenters:workcenter_delete' object.pk %}">Delete</a>
+    <a href="{% url 'workcenters:workcenter_list' %}">Back to List</a>
+{% endblock %}
