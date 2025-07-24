@@ -1,10 +1,60 @@
 {% extends "base.html" %}
+
+{% block title %}Delete Employee - Tool Tracking System{% endblock %}
+
 {% block content %}
-    <h1>Delete Employee</h1>
-    <p>Are you sure you want to delete "{{ object }}"?</p>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Confirm</button>
-    </form>
-    <a href="{% url 'employees:employee_detail' object.pk %}">Cancel</a>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h3 class="mb-0">
+                    <i class="bi bi-exclamation-triangle"></i> Delete Employee
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <strong>Warning!</strong> This action cannot be undone.
+                </div>
+                <p>Are you sure you want to delete the following employee?</p>
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h5>{{ object.name }}</h5>
+                        <p class="mb-1"><strong>Employee ID:</strong> {{ object.employee_id }}</p>
+                        <p class="mb-1"><strong>Department:</strong> {{ object.department }}</p>
+                        <p class="mb-0"><strong>Email:</strong> {{ object.email }}</p>
+                        
+                        {% with assigned_tools=object.get_checked_out_tools %}
+                            {% if assigned_tools %}
+                                <hr>
+                                <div class="alert alert-danger mb-0">
+                                    <strong>Note:</strong> This employee has {{ assigned_tools.count }} tool{{ assigned_tools.count|pluralize }} checked out.
+                                    Please check in all tools before deleting the employee.
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                {% with assigned_tools=object.get_checked_out_tools %}
+                    {% if assigned_tools %}
+                        <button type="button" class="btn btn-danger" disabled>
+                            <i class="bi bi-exclamation-triangle"></i> Cannot Delete - Tools Assigned
+                        </button>
+                    {% else %}
+                        <form method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Yes, Delete Employee
+                            </button>
+                        </form>
+                    {% endif %}
+                {% endwith %}
+                <a href="{% url 'employees:employee_detail' object.pk %}" class="btn btn-secondary ms-2">
+                    <i class="bi bi-x-lg"></i> Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

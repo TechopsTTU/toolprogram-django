@@ -12,13 +12,13 @@ class EmployeeDetailView(DetailView):
 
 class EmployeeCreateView(CreateView):
     model = Employee
-    fields = ['name', 'employee_id', 'department', 'email']
+    fields = ['name', 'employee_id', 'department', 'email', 'phone', 'primary_workcenter', 'hire_date', 'is_active']
     template_name = 'employees/employee_form.html'
     success_url = reverse_lazy('employees:employee_list')
 
 class EmployeeUpdateView(UpdateView):
     model = Employee
-    fields = ['name', 'employee_id', 'department', 'email']
+    fields = ['name', 'employee_id', 'department', 'email', 'phone', 'primary_workcenter', 'hire_date', 'is_active']
     template_name = 'employees/employee_form.html'
     success_url = reverse_lazy('employees:employee_list')
 

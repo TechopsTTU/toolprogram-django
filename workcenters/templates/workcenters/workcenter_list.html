@@ -1,16 +1,86 @@
 {% extends "base.html" %}
+
+{% block title %}Work Center List - Tool Tracking System{% endblock %}
+
 {% block content %}
-    <h1>WorkCenter List</h1>
-    <a href="{% url 'workcenters:workcenter_add' %}">Add WorkCenter</a>
-    <ul>
-        {% for workcenter in object_list %}
-            <li>
-                <a href="{% url 'workcenters:workcenter_detail' workcenter.pk %}">{{ workcenter }}</a>
-                (<a href="{% url 'workcenters:workcenter_edit' workcenter.pk %}">Edit</a> |
-                <a href="{% url 'workcenters:workcenter_delete' workcenter.pk %}">Delete</a>)
-            </li>
-        {% empty %}
-            <li>No workcenters found.</li>
-        {% endfor %}
-    </ul>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-building"></i> Work Center List</h1>
+    <a href="{% url 'workcenters:workcenter_add' %}" class="btn btn-info">
+        <i class="bi bi-plus-circle"></i> Add Work Center
+    </a>
+</div>
+
+{% if object_list %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Supervisor</th>
+                    <th>Tools Count</th>
+                    <th>Primary Employees</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for workcenter in object_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'workcenters:workcenter_detail' workcenter.pk %}" class="text-decoration-none">
+                            {{ workcenter.name }}
+                        </a>
+                    </td>
+                    <td>{{ workcenter.location }}</td>
+                    <td>{{ workcenter.supervisor }}</td>
+                    <td>
+                        {% with tools_count=workcenter.tools.count %}
+                            {% if tools_count > 0 %}
+                                <span class="badge bg-primary">{{ tools_count }} tool{{ tools_count|pluralize }}</span>
+                            {% else %}
+                                <span class="text-muted">None</span>
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+                    <td>
+                        {% with employees_count=workcenter.primary_employees.count %}
+                            {% if employees_count > 0 %}
+                                <span class="badge bg-success">{{ employees_count }} employee{{ employees_count|pluralize }}</span>
+                            {% else %}
+                                <span class="text-muted">None</span>
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+                    <td>
+                        {% if workcenter.is_active %}
+                            <span class="badge bg-success">Active</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Inactive</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a href="{% url 'workcenters:workcenter_detail' workcenter.pk %}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{% url 'workcenters:workcenter_edit' workcenter.pk %}" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'workcenters:workcenter_delete' workcenter.pk %}" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        <h4>No work centers found</h4>
+        <p>Get started by <a href="{% url 'workcenters:workcenter_add' %}">adding your first work center</a>.</p>
+    </div>
+{% endif %}
 {% endblock %}
