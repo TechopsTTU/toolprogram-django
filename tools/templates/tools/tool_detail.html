@@ -137,15 +137,23 @@
             <div class="card-body">
                 {% if object.status == 'available' %}
                     <div class="d-grid gap-2">
-                        <button class="btn btn-warning" disabled>
-                            <i class="bi bi-box-arrow-up"></i> Check Out (Coming Soon)
-                        </button>
+                        <a href="{% url 'tools:tool_checkout' object.pk %}" class="btn btn-warning">
+                            <i class="bi bi-box-arrow-up"></i> Check Out Tool
+                        </a>
                     </div>
                 {% elif object.status == 'checked_out' %}
                     <div class="d-grid gap-2">
-                        <button class="btn btn-success" disabled>
-                            <i class="bi bi-box-arrow-in-down"></i> Check In (Coming Soon)
-                        </button>
+                        <a href="{% url 'tools:tool_checkin' object.pk %}" class="btn btn-success">
+                            <i class="bi bi-box-arrow-in-down"></i> Check In Tool
+                        </a>
+                    </div>
+                {% elif object.status == 'maintenance' %}
+                    <div class="alert alert-warning">
+                        <i class="bi bi-wrench"></i> Tool is currently in maintenance
+                    </div>
+                {% elif object.status == 'calibration' %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-gear"></i> Tool is currently being calibrated
                     </div>
                 {% endif %}
             </div>
