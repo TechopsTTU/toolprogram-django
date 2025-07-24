@@ -12,13 +12,13 @@ class ToolDetailView(DetailView):
 
 class ToolCreateView(CreateView):
     model = Tool
-    fields = ['name', 'serial_number', 'calibrated', 'last_checked_in']
+    fields = ['name', 'serial_number', 'calibrated', 'status', 'assigned_to', 'current_location', 'due_date', 'last_checked_in']
     template_name = 'tools/tool_form.html'
     success_url = reverse_lazy('tools:tool_list')
 
 class ToolUpdateView(UpdateView):
     model = Tool
-    fields = ['name', 'serial_number', 'calibrated', 'last_checked_in']
+    fields = ['name', 'serial_number', 'calibrated', 'status', 'assigned_to', 'current_location', 'due_date', 'last_checked_in']
     template_name = 'tools/tool_form.html'
     success_url = reverse_lazy('tools:tool_list')
 
