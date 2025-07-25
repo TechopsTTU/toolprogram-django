@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Tool Tracking System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="jumbotron bg-light p-5 rounded">
+            <h1 class="display-4">Welcome to Tool Tracking System</h1>
+            <p class="lead">Manage tools, employees, and work centers efficiently.</p>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-tools"></i> Tools Management
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Track, assign, and manage tools inventory.</p>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'tools:tool_list' %}" class="btn btn-primary">View All Tools</a>
+                    <a href="{% url 'tools:tool_add' %}" class="btn btn-outline-primary">Add New Tool</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-people"></i> Employee Management
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Manage employee records and tool assignments.</p>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'employees:employee_list' %}" class="btn btn-success">View All Employees</a>
+                    <a href="{% url 'employees:employee_add' %}" class="btn btn-outline-success">Add New Employee</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-building"></i> Work Centers
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Manage work center locations and supervisors.</p>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'workcenters:workcenter_list' %}" class="btn btn-info">View All Work Centers</a>
+                    <a href="{% url 'workcenters:workcenter_add' %}" class="btn btn-outline-info">Add New Work Center</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <h3>Quick Stats</h3>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h2 class="text-primary">{{ total_tools }}</h2>
+                        <p class="card-text">Total Tools</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h2 class="text-success">{{ total_employees }}</h2>
+                        <p class="card-text">Total Employees</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h2 class="text-info">{{ total_workcenters }}</h2>
+                        <p class="card-text">Work Centers</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h2 class="text-warning">{{ checked_out_tools }}</h2>
+                        <p class="card-text">Tools Checked Out</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,16 +1,96 @@
 {% extends "base.html" %}
+
+{% block title %}Tool List - Tool Tracking System{% endblock %}
+
 {% block content %}
-    <h1>Tool List</h1>
-    <a href="{% url 'tools:tool_add' %}">Add Tool</a>
-    <ul>
-        {% for tool in object_list %}
-            <li>
-                <a href="{% url 'tools:tool_detail' tool.pk %}">{{ tool }}</a>
-                (<a href="{% url 'tools:tool_edit' tool.pk %}">Edit</a> |
-                <a href="{% url 'tools:tool_delete' tool.pk %}">Delete</a>)
-            </li>
-        {% empty %}
-            <li>No tools found.</li>
-        {% endfor %}
-    </ul>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-tools"></i> Tool List</h1>
+    <a href="{% url 'tools:tool_add' %}" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Add Tool
+    </a>
+</div>
+
+{% if object_list %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Serial Number</th>
+                    <th>Status</th>
+                    <th>Assigned To</th>
+                    <th>Location</th>
+                    <th>Calibrated</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tool in object_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'tools:tool_detail' tool.pk %}" class="text-decoration-none">
+                            {{ tool.name }}
+                        </a>
+                    </td>
+                    <td>{{ tool.serial_number }}</td>
+                    <td>
+                        {% if tool.status == 'available' %}
+                            <span class="badge bg-success">{{ tool.get_status_display }}</span>
+                        {% elif tool.status == 'checked_out' %}
+                            <span class="badge bg-warning">{{ tool.get_status_display }}</span>
+                        {% elif tool.status == 'maintenance' %}
+                            <span class="badge bg-danger">{{ tool.get_status_display }}</span>
+                        {% else %}
+                            <span class="badge bg-info">{{ tool.get_status_display }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if tool.assigned_to %}
+                            <a href="{% url 'employees:employee_detail' tool.assigned_to.pk %}" class="text-decoration-none">
+                                {{ tool.assigned_to.name }}
+                            </a>
+                        {% else %}
+                            <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if tool.current_location %}
+                            <a href="{% url 'workcenters:workcenter_detail' tool.current_location.pk %}" class="text-decoration-none">
+                                {{ tool.current_location.name }}
+                            </a>
+                        {% else %}
+                            <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if tool.calibrated %}
+                            <i class="bi bi-check-circle text-success"></i>
+                        {% else %}
+                            <i class="bi bi-x-circle text-danger"></i>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a href="{% url 'tools:tool_detail' tool.pk %}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{% url 'tools:tool_edit' tool.pk %}" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'tools:tool_delete' tool.pk %}" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        <h4>No tools found</h4>
+        <p>Get started by <a href="{% url 'tools:tool_add' %}">adding your first tool</a>.</p>
+    </div>
+{% endif %}
 {% endblock %}

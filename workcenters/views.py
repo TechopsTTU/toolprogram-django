@@ -12,13 +12,13 @@ class WorkCenterDetailView(DetailView):
 
 class WorkCenterCreateView(CreateView):
     model = WorkCenter
-    fields = ['name', 'location', 'supervisor']
+    fields = ['name', 'location', 'supervisor', 'description', 'is_active']
     template_name = 'workcenters/workcenter_form.html'
     success_url = reverse_lazy('workcenters:workcenter_list')
 
 class WorkCenterUpdateView(UpdateView):
     model = WorkCenter
-    fields = ['name', 'location', 'supervisor']
+    fields = ['name', 'location', 'supervisor', 'description', 'is_active']
     template_name = 'workcenters/workcenter_form.html'
     success_url = reverse_lazy('workcenters:workcenter_list')
 

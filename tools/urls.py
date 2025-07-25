@@ -9,4 +9,6 @@ urlpatterns = [
     path('tool/add/', views.ToolCreateView.as_view(), name='tool_add'),
     path('tool/<int:pk>/edit/', views.ToolUpdateView.as_view(), name='tool_edit'),
     path('tool/<int:pk>/delete/', views.ToolDeleteView.as_view(), name='tool_delete'),
+    path('tool/<int:pk>/checkout/', views.check_out_tool, name='tool_checkout'),
+    path('tool/<int:pk>/checkin/', views.check_in_tool, name='tool_checkin'),
 ]

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Check Out Tool - {{ tool.name }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h3 class="mb-0">
+                    <i class="bi bi-box-arrow-up"></i> Check Out Tool
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <h5>Tool: {{ tool.name }}</h5>
+                    <p class="mb-0">Serial Number: {{ tool.serial_number }}</p>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="employee" class="form-label">Assign to Employee</label>
+                                <select name="employee" id="employee" class="form-select" required>
+                                    <option value="">Select an employee...</option>
+                                    {% for employee in employees %}
+                                        <option value="{{ employee.pk }}">{{ employee.name }} ({{ employee.employee_id }})</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="workcenter" class="form-label">Location (Work Center)</label>
+                                <select name="workcenter" id="workcenter" class="form-select">
+                                    <option value="">Select a work center...</option>
+                                    {% for workcenter in workcenters %}
+                                        <option value="{{ workcenter.pk }}">{{ workcenter.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="due_date" class="form-label">Due Date (Optional)</label>
+                        <input type="datetime-local" name="due_date" id="due_date" class="form-control">
+                        <div class="form-text">When should this tool be returned?</div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-box-arrow-up"></i> Check Out Tool
+                        </button>
+                        <a href="{% url 'tools:tool_detail' tool.pk %}" class="btn btn-secondary">
+                            <i class="bi bi-x-lg"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

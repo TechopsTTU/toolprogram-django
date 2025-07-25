@@ -1,16 +1,92 @@
 {% extends "base.html" %}
+
+{% block title %}Employee List - Tool Tracking System{% endblock %}
+
 {% block content %}
-    <h1>Employee List</h1>
-    <a href="{% url 'employees:employee_add' %}">Add Employee</a>
-    <ul>
-        {% for employee in object_list %}
-            <li>
-                <a href="{% url 'employees:employee_detail' employee.pk %}">{{ employee }}</a>
-                (<a href="{% url 'employees:employee_edit' employee.pk %}">Edit</a> |
-                <a href="{% url 'employees:employee_delete' employee.pk %}">Delete</a>)
-            </li>
-        {% empty %}
-            <li>No employees found.</li>
-        {% endfor %}
-    </ul>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-people"></i> Employee List</h1>
+    <a href="{% url 'employees:employee_add' %}" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Add Employee
+    </a>
+</div>
+
+{% if object_list %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Employee ID</th>
+                    <th>Department</th>
+                    <th>Email</th>
+                    <th>Primary Work Center</th>
+                    <th>Assigned Tools</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in object_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'employees:employee_detail' employee.pk %}" class="text-decoration-none">
+                            {{ employee.name }}
+                        </a>
+                    </td>
+                    <td>{{ employee.employee_id }}</td>
+                    <td>{{ employee.department }}</td>
+                    <td>
+                        <a href="mailto:{{ employee.email }}" class="text-decoration-none">
+                            {{ employee.email }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if employee.primary_workcenter %}
+                            <a href="{% url 'workcenters:workcenter_detail' employee.primary_workcenter.pk %}" class="text-decoration-none">
+                                {{ employee.primary_workcenter.name }}
+                            </a>
+                        {% else %}
+                            <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% with tools_count=employee.get_checked_out_tools.count %}
+                            {% if tools_count > 0 %}
+                                <span class="badge bg-warning">{{ tools_count }} tool{{ tools_count|pluralize }}</span>
+                            {% else %}
+                                <span class="text-muted">None</span>
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+                    <td>
+                        {% if employee.is_active %}
+                            <span class="badge bg-success">Active</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Inactive</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a href="{% url 'employees:employee_detail' employee.pk %}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{% url 'employees:employee_edit' employee.pk %}" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'employees:employee_delete' employee.pk %}" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        <h4>No employees found</h4>
+        <p>Get started by <a href="{% url 'employees:employee_add' %}">adding your first employee</a>.</p>
+    </div>
+{% endif %}
 {% endblock %}
