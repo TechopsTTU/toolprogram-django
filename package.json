@@ -1,0 +1,23 @@
+{
+  "name": "toolprogram-django",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000t\u0000o\u0000o\u0000l\u0000p\u0000r\u0000o\u0000g\u0000r\u0000a\u0000m\u0000-\u0000d\u0000j\u0000a\u0000n\u0000g\u0000o\u0000\r\u0000 \u0000",
+  "main": "playwright.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TechopsTTU/toolprogram-django.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TechopsTTU/toolprogram-django/issues"
+  },
+  "homepage": "https://github.com/TechopsTTU/toolprogram-django#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.54.2"
+  }
+}
