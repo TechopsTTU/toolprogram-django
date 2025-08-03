@@ -10,7 +10,7 @@ class EmployeeViewSet(viewsets.ModelViewSet):
     """
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
 class EmployeeListView(ListView):
     model = Employee

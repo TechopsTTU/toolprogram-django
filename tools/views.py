@@ -12,31 +12,7 @@ class ToolViewSet(viewsets.ModelViewSet):
     """
     queryset = Tool.objects.all()
     serializer_class = ToolSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    @action(detail=True, methods=['post'])
-    def assign_to_employee(self, request, pk=None):
-        """Assign a tool to an employee"""
-        tool = self.get_object()
-        employee_id = request.data.get('employee_id')
-
-        if not employee_id:
-            return Response(
-                {"error": "Employee ID is required"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        from employees.models import Employee
-        try:
-            employee = Employee.objects.get(id=employee_id)
-            tool.assigned_to = employee
-            tool.save()
-            return Response(ToolSerializer(tool).data)
-        except Employee.DoesNotExist:
-            return Response(
-                {"error": "Employee not found"},
-                status=status.HTTP_404_NOT_FOUND
-            )
+    permission_classes = [permissions.AllowAny]
 
     @action(detail=True, methods=['post'])
     def assign_to_workcenter(self, request, pk=None):
@@ -53,7 +29,7 @@ class ToolViewSet(viewsets.ModelViewSet):
         from workcenters.models import WorkCenter
         try:
             workcenter = WorkCenter.objects.get(id=workcenter_id)
-            tool.workcenter = workcenter
+            tool.location = workcenter
             tool.save()
             return Response(ToolSerializer(tool).data)
         except WorkCenter.DoesNotExist:

@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "Bash(python manage.py check:*)",
+      "Bash(python manage.py test:*)",
+      "Bash(python manage.py:*)",
+      "Bash(git reset:*)",
+      "Bash(git add:*)",
+      "Bash(git push:*)",
+      "Bash(git pull:*)",
+      "Bash(git stash:*)",
+      "Bash(git merge:*)",
+      "Bash(start /b python:*)",
+      "Bash(npx playwright test:*)",
+      "Bash(taskkill:*)",
+      "Bash(pkill:*)",
+      "Bash(python:*)"
+    ],
+    "deny": []
+  }
+}

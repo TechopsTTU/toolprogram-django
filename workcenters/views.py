@@ -10,7 +10,7 @@ class WorkCenterViewSet(viewsets.ModelViewSet):
     """
     queryset = WorkCenter.objects.all()
     serializer_class = WorkCenterSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
 class WorkCenterListView(ListView):
     model = WorkCenter
