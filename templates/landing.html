@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Tool Management System{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard {
+        padding: 2rem 0;
+    }
+    
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 3rem 0;
+        margin-bottom: 3rem;
+        border-radius: 10px;
+        text-align: center;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        font-weight: 300;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+    
+    .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        border-left: 4px solid #667eea;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #667eea;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        color: #666;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .navigation-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+    
+    .nav-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+        text-decoration: none;
+        color: inherit;
+    }
+    
+    .nav-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        text-decoration: none;
+        color: inherit;
+    }
+    
+    .nav-card-header {
+        padding: 2rem;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        text-align: center;
+    }
+    
+    .nav-card-header.tools { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+    .nav-card-header.employees { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+    .nav-card-header.workcenters { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+    .nav-card-header.api { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+    .nav-card-header.admin { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+    .nav-card-header.reports { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
+    
+    .nav-card-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .nav-card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .nav-card-subtitle {
+        opacity: 0.9;
+    }
+    
+    .nav-card-body {
+        padding: 1.5rem;
+    }
+    
+    .nav-card-description {
+        color: #666;
+        margin-bottom: 1rem;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .btn-primary {
+        background: #667eea;
+        color: white;
+    }
+    
+    .btn-secondary {
+        background: #e2e8f0;
+        color: #475569;
+    }
+    
+    .btn:hover {
+        transform: translateY(-1px);
+        text-decoration: none;
+    }
+    
+    .quick-stats {
+        background: white;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    
+    .stats-title {
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+        color: #333;
+    }
+    
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+        
+        .navigation-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">🏭 Manufacturing Tool Management</h1>
+            <p class="hero-subtitle">Complete control over your manufacturing tools, employees, and work centers</p>
+        </div>
+    </div>
+
+    <!-- Statistics Dashboard -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">50</div>
+            <div class="stat-label">Total Tools</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">35</div>
+            <div class="stat-label">Available Tools</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">15</div>
+            <div class="stat-label">Employees</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">10</div>
+            <div class="stat-label">Work Centers</div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Cards -->
+    <div class="navigation-grid">
+        <!-- Tools Management -->
+        <a href="/tools/" class="nav-card">
+            <div class="nav-card-header tools">
+                <div class="nav-card-icon">🔧</div>
+                <div class="nav-card-title">Tools Management</div>
+                <div class="nav-card-subtitle">Manage your manufacturing tools</div>
+            </div>
+            <div class="nav-card-body">
+                <p class="nav-card-description">Track calibration, location, and maintenance of all manufacturing tools including micrometers, calipers, gauges, and testing equipment.</p>
+                <div class="action-buttons">
+                    <a href="/tools/create/" class="btn btn-primary">Add New Tool</a>
+                    <a href="/tools/" class="btn btn-secondary">View All Tools</a>
+                </div>
+            </div>
+        </a>
+
+        <!-- Employee Management -->
+        <a href="/employees/" class="nav-card">
+            <div class="nav-card-header employees">
+                <div class="nav-card-icon">👥</div>
+                <div class="nav-card-title">Employee Management</div>
+                <div class="nav-card-subtitle">Manage workforce and assignments</div>
+            </div>
+            <div class="nav-card-body">
+                <p class="nav-card-description">Organize employee information, departments, and tool assignments. Track who has what tools and when.</p>
+                <div class="action-buttons">
+                    <a href="/employees/create/" class="btn btn-primary">Add Employee</a>
+                    <a href="/employees/" class="btn btn-secondary">View All</a>
+                </div>
+            </div>
+        </a>
+
+        <!-- Work Centers -->
+        <a href="/workcenters/" class="nav-card">
+            <div class="nav-card-header workcenters">
+                <div class="nav-card-icon">🏭</div>
+                <div class="nav-card-title">Work Centers</div>
+                <div class="nav-card-subtitle">Manufacturing stations and areas</div>
+            </div>
+            <div class="nav-card-body">
+                <p class="nav-card-description">Manage CNC machines, assembly lines, quality control stations, and other manufacturing work centers.</p>
+                <div class="action-buttons">
+                    <a href="/workcenters/create/" class="btn btn-primary">Add Work Center</a>
+                    <a href="/workcenters/" class="btn btn-secondary">View All</a>
+                </div>
+            </div>
+        </a>
+
+        <!-- API & Integration -->
+        <a href="/api/" class="nav-card">
+            <div class="nav-card-header api">
+                <div class="nav-card-icon">📊</div>
+                <div class="nav-card-title">API & Data</div>
+                <div class="nav-card-subtitle">REST API and data access</div>
+            </div>
+            <div class="nav-card-body">
+                <p class="nav-card-description">Access system data via REST API. Perfect for integrations, reporting, and mobile applications.</p>
+                <div class="action-buttons">
+                    <a href="/api/tools/" class="btn btn-primary">Tools API</a>
+                    <a href="/api/db-status/" class="btn btn-secondary">DB Status</a>
+                </div>
+            </div>
+        </a>
+
+        <!-- Admin Panel -->
+        <a href="/admin/" class="nav-card">
+            <div class="nav-card-header admin">
+                <div class="nav-card-icon">⚙️</div>
+                <div class="nav-card-title">Administration</div>
+                <div class="nav-card-subtitle">System configuration</div>
+            </div>
+            <div class="nav-card-body">
+                <p class="nav-card-description">Advanced system administration, user management, and configuration settings.</p>
+                <div class="action-buttons">
+                    <a href="/admin/" class="btn btn-primary">Admin Panel</a>
+                    <a href="/admin/tools/tool/" class="btn btn-secondary">Manage Data</a>
+                </div>
+            </div>
+        </a>
+
+        <!-- Reports & Analytics -->
+        <div class="nav-card">
+            <div class="nav-card-header reports">
+                <div class="nav-card-icon">📈</div>
+                <div class="nav-card-title">Reports & Analytics</div>
+                <div class="nav-card-subtitle">Insights and metrics</div>
+            </div>
+            <div class="nav-card-body">
+                <p class="nav-card-description">Generate reports on tool usage, calibration schedules, and work center efficiency.</p>
+                <div class="action-buttons">
+                    <a href="#" class="btn btn-primary">Coming Soon</a>
+                    <a href="/api/tools/?format=json" class="btn btn-secondary">Export Data</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Status -->
+    <div class="quick-stats">
+        <h2 class="stats-title">🚀 System Ready</h2>
+        <p>Your Django Tool Management System is fully operational with populated test data.</p>
+        <p>Navigate to any section above to start managing your manufacturing operations.</p>
+    </div>
+</div>
+{% endblock %}

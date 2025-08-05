@@ -1,16 +1,231 @@
 {% extends "base.html" %}
+{% block title %}Tools - Tool Management System{% endblock %}
+
+{% block extra_css %}
+<style>
+    .tools-page {
+        padding: 2rem 0;
+    }
+    
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .page-title {
+        font-size: 2rem;
+        color: #333;
+        margin: 0;
+    }
+    
+    .add-tool-btn {
+        background: #667eea;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+    
+    .add-tool-btn:hover {
+        background: #5a67d8;
+        transform: translateY(-1px);
+        text-decoration: none;
+        color: white;
+    }
+    
+    .tools-grid {
+        displays: grid;
+        gap: 1rem;
+    }
+    
+    .tool-card {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border-left: 4px solid #667eea;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .tool-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .tool-header {
+        display: flex;
+        justify-content: between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+    
+    .tool-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+        margin: 0 0 0.5rem 0;
+        flex: 1;
+    }
+    
+    .tool-details {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+    
+    .tool-detail-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.25rem;
+    }
+    
+    .tool-actions {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-end;
+    }
+    
+    .btn {
+        padding: 0.4rem 0.8rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.85rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .btn-view {
+        background: #e2e8f0;
+        color: #475569;
+    }
+    
+    .btn-edit {
+        background: #667eea;
+        color: white;
+    }
+    
+    .btn-delete {
+        background: #ef4444;
+        color: white;
+    }
+    
+    .btn:hover {
+        transform: translateY(-1px);
+        text-decoration: none;
+    }
+    
+    .status-badge {
+        padding: 0.25rem 0.5rem;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+    
+    .status-calibrated {
+        background: #d1fae5;
+        color: #065f46;
+    }
+    
+    .status-expired {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .empty-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+    
+    .empty-title {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+    
+    .empty-description {
+        color: #666;
+        margin-bottom: 2rem;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-    <h1>Tool List</h1>
-    <a href="{% url 'tools:tool_add' %}">Add Tool</a>
-    <ul>
-        {% for tool in object_list %}
-            <li>
-                <a href="{% url 'tools:tool_detail' tool.pk %}">{{ tool }}</a>
-                (<a href="{% url 'tools:tool_edit' tool.pk %}">Edit</a> |
-                <a href="{% url 'tools:tool_delete' tool.pk %}">Delete</a>)
-            </li>
-        {% empty %}
-            <li>No tools found.</li>
-        {% endfor %}
-    </ul>
+<div class="tools-page">
+    <div class="page-header">
+        <h1 class="page-title">🔧 Manufacturing Tools</h1>
+        <a href="{% url 'tools:tool_add' %}" class="add-tool-btn">+ Add New Tool</a>
+    </div>
+
+    {% if object_list %}
+        <div class="tools-grid">
+            {% for tool in object_list %}
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-name">{{ tool.name }}</div>
+                    {% if tool.calibrated %}
+                        <span class="status-badge status-calibrated">Calibrated</span>
+                    {% else %}
+                        <span class="status-badge status-expired">Needs Cal</span>
+                    {% endif %}
+                </div>
+                
+                <div class="tool-details">
+                    <div class="tool-detail-row">
+                        <span><strong>Serial Number:</strong></span>
+                        <span>{{ tool.serial_number }}</span>
+                    </div>
+                    <div class="tool-detail-row">
+                        <span><strong>Location:</strong></span>
+                        <span>{% if tool.location %}{{ tool.location }}{% else %}Unassigned{% endif %}</span>
+                    </div>
+                    {% if tool.description %}
+                    <div class="tool-detail-row">
+                        <span><strong>Description:</strong></span>
+                        <span>{{ tool.description|truncatechars:50 }}</span>
+                    </div>
+                    {% endif %}
+                    {% if tool.last_checked_in %}
+                    <div class="tool-detail-row">
+                        <span><strong>Last Check-in:</strong></span>
+                        <span>{{ tool.last_checked_in|date:"M d, Y" }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="tool-actions">
+                    <a href="{% url 'tools:tool_detail' tool.pk %}" class="btn btn-view">View</a>
+                    <a href="{% url 'tools:tool_edit' tool.pk %}" class="btn btn-edit">Edit</a>
+                    <a href="{% url 'tools:tool_delete' tool.pk %}" class="btn btn-delete">Delete</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">🔧</div>
+            <h2 class="empty-title">No Tools Found</h2>
+            <p class="empty-description">Start by adding your first manufacturing tool to the system.</p>
+            <a href="{% url 'tools:tool_add' %}" class="add-tool-btn">Add Your First Tool</a>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}

@@ -7,11 +7,11 @@ class WorkCenterSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = WorkCenter
-        fields = ['id', 'name', 'location', 'description', 'tools']
+        fields = ['id', 'name', 'location', 'supervisor', 'description', 'tools']
         
     def get_tools(self, obj):
         """Get tools assigned to this work center"""
-        tools = Tool.objects.filter(workcenter=obj)
+        tools = Tool.objects.filter(location=obj)
         return [{
             'id': tool.id,
             'name': tool.name,

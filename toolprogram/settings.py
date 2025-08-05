@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,12 +78,32 @@ WSGI_APPLICATION = 'toolprogram.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Environment-based database configuration
+DATABASE_ENV = config('DATABASE_ENV', default='local')  # 'local', 'production'
+
+if DATABASE_ENV == 'production':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'mssql',
+            'NAME': config('NDUSTROS_DB', default='NdustrOS'),
+            'HOST': config('NDUSTROS_SERVER', default='PLATSRVR'),
+            'PORT': config('NDUSTROS_PORT', default='1583'),
+            'USER': config('NDUSTROS_USER', default=''),
+            'PASSWORD': config('NDUSTROS_PASS', default=''),
+            'OPTIONS': {
+                'driver': config('NDUSTROS_DRIVER', default='Pervasive ODBC Interface'),
+                'dsn': '',
+                'extra_params': f"ServerName={config('NDUSTROS_SERVER', default='PLATSRVR')};Port={config('NDUSTROS_PORT', default='1583')};DBQ={config('NDUSTROS_DB', default='NdustrOS')}"
+            },
+        }
     }
-}
+else:  # local/sqlite (default)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation

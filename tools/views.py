@@ -5,6 +5,12 @@ from .models import Tool
 from .serializers import ToolSerializer
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.shortcuts import render
+
+# Landing page view
+def landing_page(request):
+    """Landing page with navigation to all sections"""
+    return render(request, 'landing.html')
 
 class ToolViewSet(viewsets.ModelViewSet):
     """

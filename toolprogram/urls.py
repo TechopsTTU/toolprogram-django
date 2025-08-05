@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.db import connection
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.routers import DefaultRouter
-from tools.views import ToolViewSet
+from tools.views import ToolViewSet, landing_page
 from employees.views import EmployeeViewSet
 from workcenters.views import WorkCenterViewSet
 
@@ -24,7 +24,7 @@ api_router.register(r'employees', EmployeeViewSet)
 api_router.register(r'workcenters', WorkCenterViewSet)
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='/tools/', permanent=False)),
+    path('', landing_page, name='landing'),
     path('admin/', admin.site.urls),
     path('api/db-status/', db_status_view, name='db-status'),
     path('api/', include(api_router.urls)),

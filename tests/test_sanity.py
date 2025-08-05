@@ -87,6 +87,7 @@ class URLSanityTestCase(TestCase):
             first_name="John",
             last_name="Doe",
             employee_id="E001",
+            employee_number="E001", 
             email="john.doe@example.com"
         )
         
@@ -164,6 +165,7 @@ class APISanityTestCase(TestCase):
             first_name="John",
             last_name="Doe",
             employee_id="E001",
+            employee_number="E001", 
             email="john.doe@example.com"
         )
         
