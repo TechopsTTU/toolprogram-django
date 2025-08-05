@@ -39,9 +39,9 @@ def switch_database_env(environment):
         for env_type in valid_environments:
             env_path = base_dir / f'.env.{env_type}'
             if env_path.exists():
-                print(f"  ✓ .env.{env_type}")
+                print(f"  [OK] .env.{env_type}")
             else:
-                print(f"  ✗ .env.{env_type}")
+                print(f"  [MISSING] .env.{env_type}")
         return False
     
     try:
@@ -53,8 +53,8 @@ def switch_database_env(environment):
         
         # Copy the new environment file
         shutil.copy2(source_file, env_file)
-        print(f"✓ Switched to '{environment}' environment")
-        print(f"✓ Copied {source_file.name} to .env")
+        print(f"[SUCCESS] Switched to '{environment}' environment")
+        print(f"[SUCCESS] Copied {source_file.name} to .env")
         
         # Display current configuration
         print("\nCurrent database configuration:")

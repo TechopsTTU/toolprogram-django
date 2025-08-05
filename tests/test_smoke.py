@@ -26,6 +26,8 @@ class CRUDSmokeTestCase(TestCase):
         # Create initial data
         self.workcenter = WorkCenter.objects.create(
             name="Test WorkCenter",
+            location="Test Location",
+            supervisor="Test Supervisor",
             description="Test Description"
         )
     
@@ -69,9 +71,12 @@ class CRUDSmokeTestCase(TestCase):
         """Smoke test for employee CRUD operations"""
         # CREATE
         employee_data = {
+            'name': 'Jane Smith',
             'first_name': 'Jane',
             'last_name': 'Smith',
             'employee_id': 'ST002',
+            'employee_number': 'EMP002',
+            'department': 'Test Department',
             'email': 'jane.smith@example.com'
         }
         
@@ -88,9 +93,12 @@ class CRUDSmokeTestCase(TestCase):
         
         # UPDATE
         update_data = {
+            'name': 'Janet Smith',
             'first_name': 'Janet',
             'last_name': 'Smith',
             'employee_id': 'ST002',
+            'employee_number': 'EMP002',
+            'department': 'Test Department',
             'email': 'janet.smith@example.com'
         }
         
@@ -106,6 +114,8 @@ class CRUDSmokeTestCase(TestCase):
         # CREATE
         wc_data = {
             'name': 'Smoke Test WC',
+            'location': 'Test Location',
+            'supervisor': 'Test Supervisor',
             'description': 'WorkCenter for smoke testing'
         }
         
@@ -123,6 +133,8 @@ class CRUDSmokeTestCase(TestCase):
         # UPDATE
         update_data = {
             'name': 'Updated Smoke Test WC',
+            'location': 'Updated Location',
+            'supervisor': 'Updated Supervisor',
             'description': 'Updated description'
         }
         
@@ -151,6 +163,8 @@ class APISmokeTestCase(TestCase):
         # Create test data
         self.workcenter = WorkCenter.objects.create(
             name="API Test WorkCenter",
+            location="API Location",
+            supervisor="API Supervisor",
             description="WorkCenter for API testing"
         )
     
@@ -210,9 +224,12 @@ class APISmokeTestCase(TestCase):
         
         # Test POST create
         employee_data = {
+            'name': 'API User',
             'first_name': 'API',
             'last_name': 'User',
             'employee_id': 'API001',
+            'employee_number': 'API001',
+            'department': 'API Testing',
             'email': 'api.user@example.com'
         }
         
@@ -232,6 +249,8 @@ class APISmokeTestCase(TestCase):
         # Test POST create
         wc_data = {
             'name': 'API Test WC',
+            'location': 'API Location',
+            'supervisor': 'API Supervisor',
             'description': 'WorkCenter created via API'
         }
         

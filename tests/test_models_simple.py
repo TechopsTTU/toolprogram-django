@@ -95,9 +95,9 @@ class SimpleViewTestCase(TestCase):
                 self.assertEqual(response.status_code, 200)
     
     def test_root_redirect(self):
-        """Test root URL redirects"""
+        """Test root URL shows landing page"""
         response = self.client.get('/')
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
 
 class SimpleAPITestCase(TestCase):
