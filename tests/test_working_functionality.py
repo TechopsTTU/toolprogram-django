@@ -144,10 +144,10 @@ class BasicViewTestCase(TestCase):
         """Set up test client"""
         self.client = Client()
     
-    def test_root_redirect(self):
-        """Test root URL redirects (this should work)"""
+    def test_root_landing_page(self):
+        """Test root URL shows landing page (this should work)"""
         response = self.client.get('/')
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
     
     def test_list_views_exist(self):
         """Test list views respond (may be 200 or 404)"""

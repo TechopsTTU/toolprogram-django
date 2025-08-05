@@ -98,11 +98,11 @@ class URLSanityTestCase(TestCase):
             location=self.workcenter
         )
     
-    def test_root_url_redirects(self):
-        """Test root URL redirects to tools"""
+    def test_root_url_landing_page(self):
+        """Test root URL shows landing page"""
         response = self.client.get('/')
-        self.assertEqual(response.status_code, 302)
-        self.assertIn('/tools/', response.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Tool Management System')
     
     def test_tools_list_url(self):
         """Test tools list URL is accessible"""
