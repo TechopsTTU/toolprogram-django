@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tool Return List - Tool Program{% endblock %}
+
+{% block content %}
+<div class="d-flex mt-4 mb-3">
+    <div class="w-auto me-5">
+        <h1 class="mt-5">Checked Out Tools</h1>
+        <div class="w-100 d-flex mb-2 mt-3">
+            <a href="{% url 'tooltracker:checkout' %}" class="btn btn-secondary buttonPurple btn-md me-2" role="button">Check Out Tool</a>
+            <a class="btn btn-secondary btn-md" role="button" href="#" onclick="exportToExcel()">Export All</a>
+        </div>
+    </div>
+    <div class="w-auto ms-5">
+        <img alt="Checked Out List Icon" class="bi" width="124" height="125" src="{% static 'images/checkedOutList.png' %}" />
+    </div>
+</div>
+
+{% if transactions %}
+    <table class="table tableHoverTR">
+        <thead>
+            <tr>
+                <th>Tool</th>
+                <th>Serial Number</th>
+                <th>Employee</th>
+                <th>From Location</th>
+                <th>To Location</th>
+                <th>Check Out Date</th>
+                <th>Promise Return Date</th>
+                <th>Days Out</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+                <tr {% if transaction.is_overdue %}class="table-danger"{% endif %}>
+                    <td>{{ transaction.tool.name }}</td>
+                    <td>{{ transaction.tool.serial_number }}</td>
+                    <td>{{ transaction.employee.full_name }}</td>
+                    <td>{{ transaction.from_location.name|default:"N/A" }}</td>
+                    <td>{{ transaction.to_location.name }}</td>
+                    <td>{{ transaction.checkout_date|date:"m/d/Y" }}</td>
+                    <td>
+                        {% if transaction.promise_return_date %}
+                            {{ transaction.promise_return_date|date:"m/d/Y" }}
+                        {% else %}
+                            <span class="text-muted">Not set</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="{% if transaction.is_overdue %}text-danger fw-bold{% endif %}">
+                            {{ transaction.days_out }} day{{ transaction.days_out|pluralize }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge {% if transaction.is_overdue %}bg-danger{% else %}bg-warning{% endif %}">
+                            {{ transaction.get_status_display }}
+                        </span>
+                    </td>
+                    <td>
+                        <form method="post" action="{% url 'tooltracker:return' transaction.id %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-success buttonOrange" 
+                                    onclick="return confirm('Return {{ transaction.tool.name }}?')">
+                                Return
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="alert alert-info mt-4">
+        <h4>No Tools Currently Checked Out</h4>
+        <p>All tools are currently available. <a href="{% url 'tooltracker:checkout' %}">Check out a tool</a> to get started.</p>
+    </div>
+{% endif %}
+
+<div class="mt-4">
+    <a href="/" class="btn btn-secondary">Back to Home</a>
+</div>
+
+<script>
+    function exportToExcel() {
+        // Simple CSV export functionality
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Tool,Serial Number,Employee,From Location,To Location,Check Out Date,Promise Return Date,Days Out,Status\n";
+        
+        {% for transaction in transactions %}
+            csvContent += '"{{ transaction.tool.name }}","{{ transaction.tool.serial_number }}","{{ transaction.employee.full_name }}","{{ transaction.from_location.name|default:"N/A" }}","{{ transaction.to_location.name }}","{{ transaction.checkout_date|date:"m/d/Y" }}","{{ transaction.promise_return_date|date:"m/d/Y"|default:"Not set" }}","{{ transaction.days_out }}","{{ transaction.get_status_display }}"\n';
+        {% endfor %}
+        
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "checked_out_tools.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+{% endblock %}

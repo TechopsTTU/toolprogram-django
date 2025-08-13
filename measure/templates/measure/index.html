@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Recent Checks - Tool Program{% endblock %}
+
+{% block content %}
+<div class="d-flex mt-4 mb-3">
+    <div class="w-auto me-5">
+        <h1 class="mt-5">Recent Tool Measure</h1>
+        <div class="w-100 d-flex mb-2 mt-3">
+            <a href="{% url 'measure:add' %}" class="btn btn-secondary buttonPurple btn-md me-2" role="button">Add New Measure</a>
+            <a class="btn btn-secondary btn-md" role="button" href="{% url 'measure:export' %}">Export All</a>
+        </div>
+    </div>
+    <div class="w-auto ms-5">
+        <img alt="Measure List Icon" class="bi" width="124" height="125" src="{% static 'images/MeasureList.png' %}" />
+    </div>
+</div>
+
+{% if measurements %}
+    <table class="table tableHoverTR">
+        <thead>
+            <tr>
+                <th class="visually-hidden">ID</th>
+                <th>T_Date</th>
+                <th>WC</th>
+                <th>ToolNo</th>
+                <th>EmpName</th>
+                <th>S_Size</th>
+                <th>Condition</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in measurements %}
+                <tr>
+                    <td class="visually-hidden">{{ item.id }}</td>
+                    <td>{{ item.measurement_date|date:"m/d/Y" }}</td>
+                    <td>{{ item.work_center.name|default:"N/A" }}</td>
+                    <td>{{ item.tool.serial_number }}</td>
+                    <td>
+                        {% if item.employee.first_name and item.employee.last_name %}
+                            {{ item.employee.last_name }}, {{ item.employee.first_name|slice:":1" }}
+                        {% else %}
+                            {{ item.employee.name }}
+                        {% endif %}
+                    </td>
+                    <td>{{ item.size_measured }}</td>
+                    <td>
+                        <span class="badge 
+                            {% if item.condition == 'GOOD' %}bg-success
+                            {% elif item.condition == 'FAIR' %}bg-warning
+                            {% else %}bg-danger{% endif %}">
+                            {{ item.get_condition_display }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{% url 'measure:details' item.id %}" class="btn btn-sm btn-outline-primary">Details</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if measurements.has_other_pages %}
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {% if measurements.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ measurements.previous_page_number }}">Previous</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link disabled" href="#" tabindex="-1">Previous</a>
+                    </li>
+                {% endif %}
+
+                {% for num in measurements.paginator.page_range %}
+                    {% if measurements.number == num %}
+                        <li class="page-item active">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% elif num > measurements.number|add:'-3' and num < measurements.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if measurements.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ measurements.next_page_number }}">Next</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link disabled" href="#" tabindex="-1">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+
+{% else %}
+    <div class="alert alert-info mt-4">
+        <h4>No Results Found...</h4>
+        <p>No measurements have been recorded yet. <a href="{% url 'measure:add' %}">Add a new measurement</a> to get started.</p>
+    </div>
+{% endif %}
+
+<div class="mt-4">
+    <a href="/" class="btn btn-secondary">Back to Home</a>
+</div>
+{% endblock %}

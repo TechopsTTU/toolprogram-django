@@ -1,0 +1,14 @@
+TOYO TANSO LOGO PLACEHOLDER
+
+To complete the logo integration:
+
+1. Save your Toyo Tanso logo image as "toyo-tanso-logo.png" in this directory
+2. The logo should be in PNG format (preferred) or SVG
+3. Recommended minimum width: 200px for good quality
+4. The logo will automatically appear in the header of all pages
+
+Current status: Logo integration is complete in the templates, waiting for actual logo file.
+
+If you need to temporarily hide the logo:
+- Comment out the <img> tag in templates/base.html (around line 136)
+- Or add "display: none;" to the .company-logo CSS class

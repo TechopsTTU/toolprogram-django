@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'tools',
     'employees',
     'workcenters',
+    'tooltracker',  # New app for tool tracking functionality
+    'measure',  # New app for tool measurement functionality
     'rest_framework',  # Add Django REST Framework
 ]
 

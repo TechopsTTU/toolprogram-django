@@ -49,48 +49,55 @@ coverage.xml
 # Django specific:
 *.log
 local_settings.py
+
+# Database files (contains sensitive data)
 db.sqlite3
+*.db
+*.sqlite
+*.sqlite3
 
-# Flask specific (if applicable):
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# Virtual Environments
+# Environment files (contains secrets)
 .env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
+.env.local
+.env.backup
+.env.production
 
-# Mypy
-.mypy_cache/
-.dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# IDE or Editor directories and files
-.idea/
+# IDE and editor files
 .vscode/
+.idea/
 *.swp
+*.swo
+*~
 .DS_Store
+Thumbs.db
 
 # Node.js dependencies
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Build and dist directories
+dist/
+build/
+
+# Test result files
+test-results/
+playwright-report/
+test-results.html
+
+# Personal and company specific files
+legacy/
+.claude/
+
+# Temporary files
+*.tmp
+*.temp
+_ul
+
+# Server logs
+server.log
+
+# Production and deployment files
+*.production
+*.staging
