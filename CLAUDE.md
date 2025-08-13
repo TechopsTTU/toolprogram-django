@@ -64,12 +64,28 @@ python manage.py runserver
 # Create superuser
 python manage.py createsuperuser
 
-# Populate with realistic manufacturing data (recommended)
-python populate_enhanced_simple.py
+# Populate with comprehensive demo data (recommended)
+python populate_demo_simple.py
 
 # Alternative data population scripts
+python populate_enhanced_simple.py   # Enhanced manufacturing data
 python populate_realistic_data.py    # Original realistic data
 python seed.py                       # Basic seed data
+```
+
+### Frontend Testing & End-to-End
+```bash
+# Install Playwright dependencies (if not already installed)
+npm install
+
+# Run Playwright end-to-end tests
+npx playwright test
+
+# Run Playwright tests with UI mode
+npx playwright test --ui
+
+# Run specific test file
+npx playwright test playwright-tests/employees.spec.js
 ```
 
 ## Architecture Overview
@@ -78,6 +94,8 @@ python seed.py                       # Basic seed data
 - **tools**: Enhanced tool inventory with unique serial numbers, calibration tracking, utility methods (`check_in()`, `assign_to_location()`), and property accessors (`is_available`, `calibration_status`)
 - **employees**: Employee management with validation, auto-population, employee number format validation (EMP-XXX), and @toyotanso.com email addresses
 - **workcenters**: Work center management with tool counting properties, comprehensive tool retrieval methods, and realistic manufacturing descriptions
+- **tooltracker**: Tool checkout/return functionality with enhanced tracking capabilities
+- **measure**: Tool measurement and calibration management system
 
 ### Database Strategy
 The application uses environment-based database configuration via `DATABASE_ENV` setting:
@@ -98,6 +116,18 @@ Environment switching is handled by `.env` files (`.env.local`, `.env.production
 - **Validation**: Employee numbers follow EMP-XXX format, tools have comprehensive property methods
 - **Relationships**: `Tool.location` → `WorkCenter` (SET_NULL for data integrity)
 - **Business Logic**: Models include utility methods like `tool.check_in()`, `workcenter.get_calibrated_tools()`
+
+### Legacy Integration & Demo Data
+The system includes C# legacy components in `/legacy/` directory and comprehensive demo data:
+- **ToolProgramCore**: Original .NET application with Windows Forms UI
+- **Database Integration**: Pervasive SQL connectivity patterns and business logic references
+- **Migration Context**: Extracted models and controllers from legacy system inform Django implementation
+- **Demo Data**: `populate_demo_simple.py` creates realistic manufacturing data based on legacy system patterns:
+  - 15 work centers covering complete manufacturing operations
+  - 20 employees with EMP-XXX numbering and @toyotanso.com emails
+  - 26 professional precision tools (Mitutoyo, Sandvik, Kennametal, etc.)
+  - Active tool transactions and checkout history
+  - Calibration records with NIST traceability
 
 ## Development Workflow
 
@@ -142,6 +172,8 @@ The system supports multiple frontends with professional Toyo Tanso USA branding
 ### Testing Files
 - `tests/test_*.py`: Test modules organized by category (sanity, models, functionality, smoke, enhanced)
 - `playwright-tests/`: End-to-end browser testing with Playwright
+- `playwright.config.js`: Playwright test configuration (headless mode, localhost:8000 base URL)
+- `package.json`: Node.js dependencies for Playwright testing
 
 ### Static Assets & Templates
 - `static/images/TTU_LOGO.jpg`: Toyo Tanso USA corporate logo
@@ -149,7 +181,8 @@ The system supports multiple frontends with professional Toyo Tanso USA branding
 - `templates/landing.html`: Enhanced landing page with Toyo Tanso branding
 
 ### Data Population Scripts
-- `populate_enhanced_simple.py`: Recommended - 12 professional tools, 11 employees, 5 work centers
+- `populate_demo_simple.py`: **RECOMMENDED** - Comprehensive demo data based on legacy VB/.NET system analysis (26 tools, 20 employees, 15 work centers, transaction history, calibration records)
+- `populate_enhanced_simple.py`: Alternative - 12 professional tools, 11 employees, 5 work centers
 - `populate_realistic_data.py`: Alternative realistic data set
 - `seed.py`: Basic development data
 
